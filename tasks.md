@@ -23,7 +23,9 @@ SELECT * FROM matches WHERE hometeam = 'Barcelona' OR awayteam = 'Barcelona';
 ```sql
 <!-- Copy solution here -->
 
-SELECT * FROM divisions WHERE country = 'Scotland';
+SELECT * FROM divisions WHERE country = 'Scotland'; 
+
+-- SOLUTION should use name rather than *
 ```
 
 4) Find the division code for the Bundesliga. Use that code to find out how many matches Freiburg have played in the Bundesliga since the data started being collected.
@@ -33,6 +35,7 @@ SELECT * FROM divisions WHERE country = 'Scotland';
 SELECT * FROM divisions WHERE name = 'Bundesliga'; -- code is D1
 SELECT COUNT(*) FROM matches WHERE division_code = 'D1' AND hometeam = 'Freiburg' OR awayteam = 'Freiburg'; --count = 459
 
+-- CHECK THIS - SOLUTION HAS DIFFERENT NUMBER 
 ```
 
 5) Find the unique names of the teams which include the word "City" in their name (as entered in the database)
@@ -41,6 +44,7 @@ SELECT COUNT(*) FROM matches WHERE division_code = 'D1' AND hometeam = 'Freiburg
 <!-- Copy solution here -->
 SELECT COUNT(DISTINCT hometeam) FROM matches WHERE LOWER(hometeam) LIKE LOWER('%City%'); --count = 4 
 
+-- SOLUTION - SELECT DISTINCT hometeam FROM matches WHERE LOWER(hometeam) LIKE LOWER('%City%')
 ```
 
 6) How many different teams have played in matches recorded in a French division?
@@ -51,6 +55,7 @@ SELECT * FROM divisions WHERE country = 'France'; -- gives division code as F1 a
 SELECT COUNT(DISTINCT awayteam) FROM matches WHERE division_code = 'F1' OR division_code = 'F2'; -- count 61
 -- got the same answer when I used hometeam rather than awayteam
 
+-- COULD HAVE USED: SELECT COUNT(DISTINCT awayteam) FROM matches WHERE division_code IN ('F1', 'F2');
 ```
 
 7) Have Huddersfield played Swansea in the period covered?
@@ -68,14 +73,19 @@ SELECT * FROM matches WHERE hometeam = 'Huddersfield' AND awayteam = 'Swansea' O
 SELECT * FROM divisions WHERE name = 'Eredivisie'; -- code is N1 
 SELECT COUNT(*) FROM matches WHERE division_code = 'N1' AND ftr = 'D' AND season >= 2010 AND season <= 2015; -- count is 431
 
+--Could have used: SELECT COUNT(*) FROM matches WHERE division_code = 'N1' AND ftr = 'D' AND season BETWEEN 2010 AND 2015;
+
 ```
 
 9) Select the matches played in the Premier League in order of total goals scored from highest to lowest. Where there is a tie the match with more home goals should come first.
 
 ```sql
 <!-- Copy solution here -->
+SELECT * FROM divisions WHERE name = 'Premier League'; -- has code E0
+SELECT * FROM matches WHERE division_code = 'E0'ORDER BY fthg + ftag DESC;
 
-
+-- SOLUTION: 
+-- SELECT * FROM matches WHERE division_code = 'E0' ORDER BY (fthg + ftag) DESC, fthg DESC;
 ```
 
 10) In which division and which season were the most goals scored?
@@ -83,6 +93,8 @@ SELECT COUNT(*) FROM matches WHERE division_code = 'N1' AND ftr = 'D' AND season
 ```sql
 <!-- Copy solution here -->
 
+-- DIDN'T GET TIME TO ATTEMPT THIS :(
+-- SOLUTION: SElECT division_code, season, SUM (fthg + ftag) FROM matches GROUP BY division_code, season ORDER BY sum DESC LIMIT 1;
 
 ```
 
